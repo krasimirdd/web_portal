@@ -1,0 +1,16 @@
+{
+  "name": "findAllUsers",
+  "schemaPath": "user.graphqls",
+  "extensions": {
+    "endpoints": {
+      "Default GraphQL Endpoint": {
+        "url": "http://localhost:8081/apis/graphql",
+        "headers": {
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36",
+          "Cookie": "JSESSIONID=11667CEDD7220A0A1336016765901D0B"
+        },
+        "introspect": false
+      }
+    }
+  }
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+
+<!-- Navbar -->
+<div th:replace="fragments/navbar :: navbar('home')">Navbar here</div>
+<!-- EO: Navbar -->
+
+<h1 class="margins-top-bottom home-paragraph">
+    Welcome to Tabula, <span th:text="${#authentication.getName()}" th:remove="tag">user</span>!
+</h1>
+
+<p class="home-paragraph">
+    Have fun!
+</p>
+
+<div class="container center">
+    <div class="card">
+        <article class="card-body">
+
+            <fieldset>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col"> Code </th>
+                        <th scope="col"> Date </th>
+                        <th scope="col"> Weekday </th>
+                        <th scope="col"> Hour </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${visitsToProcess.isEmpty()}">
+                        <td colspan="2"> No visit requests available </td>
+                    </tr>
+                    <tr class="center" th:each="visit : ${visitsToProcess}">
+                        <td><span class="center" th:text="${visit.code}"> Code </span></td>
+                        <td><span class="center" th:text="${visit.date.toLocalDate()}"> Date </span></td>
+                        <td><span class="center" th:text="${visit.date.getDayOfWeek()}"> Weekday </span></td>
+                        <td><span class="center" th:text="${visit.date.toLocalTime()}"> Hour </span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </article>
+    </div>
+</div>
+
+<div class="container center">
+    <div class="card">
+        <article class="card-body">
+
+            <hr>
+            <form th:action="@{/visit/acknowledgement}" method="post">
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    This username and password combination does not exist.
+                </div>
+                <div class="form-group">
+                    <label for="visitCode">Code</label>
+                    <input
+                            name="code"
+                            type="text"
+                            class="form-control"
+                            id="visitCode"/>
+                </div> <!-- form-group// -->
+                <div class="form-group">
+                    <label for="visitRemedial">Your identification - email</label>
+                    <input
+                            name="remedial"
+                            type="text"
+                            class="form-control"
+                            id="visitRemedial"/>
+                </div> <!-- form-group// -->
+
+                <div class="form-group">
+                    <label for="visitStatus">Do you approve:</label>
+                    <select name="status" id="visitStatus" class="form-control">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div> <!-- form-group// -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        </div> <!-- form-group// -->
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <a class="small" href="#">Show all dentists.</a>
+                    </div>
+                </div> <!-- .row// -->
+            </form>
+        </article>
+    </div> <!-- card.// -->
+
+    <!-- Bootstap JS -->
+    <div th:replace="fragments/bootstrap-js :: bootstrap-js"></div>
+    <!-- EO: Bootstap JS -->
+</div>
+</body>
+</html>

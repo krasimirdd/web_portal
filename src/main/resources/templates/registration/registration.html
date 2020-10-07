@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head"></head>
+<body>
+
+<div class="container center">
+    <div class="card">
+        <article class="card-body">
+            <form th:action="@{/registration}" method="post" th:object="${formData}">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input
+                            name="email"
+                            type="email"
+                            th:value="*{email}"
+                            th:errorclass="is-invalid"
+                            placeholder="Email"
+                            class="form-control"
+                            id="email"/>
+                    <div class="invalid-feedback">
+                        The email should be provided and valid and should not exist in the system.
+                    </div>
+                </div> <!-- form-group// -->
+                <div class="password">
+                    <label for="password">Password</label>
+                    <input
+                            name="password"
+                            type="password"
+                            th:errorclass="is-invalid"
+                            placeholder="Password"
+                            class="form-control"
+                            id="password"/>
+                    <div class="invalid-feedback">
+                        Password should be provided and should match the confirmed password.
+                    </div>
+                </div> <!-- form-group// -->
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input
+                            name="confirmPassword"
+                            type="password"
+                            th:errorclass="is-invalid"
+                            placeholder="Confirm Password"
+                            class="form-control"
+                            id="confirmPassword"/>
+                    <div class="invalid-feedback">
+                        Password should be provided and should match the confirmed password.
+                    </div>
+                </div> <!-- form-group// -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        </div> <!-- form-group// -->
+                    </div>
+                </div> <!-- .row// -->
+            </form>
+        </article>
+    </div> <!-- card.// -->
+
+    <!-- Bootstap JS -->
+    <div th:replace="fragments/bootstrap-js :: bootstrap-js"></div>
+    <!-- EO: Bootstap JS -->
+</div>
+</body>
+</html>

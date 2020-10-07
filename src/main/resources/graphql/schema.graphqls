@@ -1,0 +1,1 @@
+type User {    id: ID!    email: String!    password: String#    role: Role!}# Roottype Query {    findAllUsers: [User]!}type Mutation {    createUser(email: String!, password: String!, role: String): User!}
