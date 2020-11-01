@@ -26,7 +26,8 @@ public class TimeIsWorkableValidator implements ConstraintValidator<TimeIsWorkab
         final String dateObj = (String) beanWrapper.getPropertyValue(fieldName);
 
         int hour = LocalDateTime.parse(dateObj).getHour();
-        valid = hour > 8 && hour < 20;
+        int day = LocalDateTime.parse(dateObj).getDayOfWeek().getValue();
+        valid = hour > 8 && hour < 20 && day != 6 && day != 7 ;
 
         if (!valid) {
             context.

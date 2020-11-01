@@ -52,6 +52,10 @@
                             class="form-control"
                             id="visitRemedial"/>
                 </div> <!-- form-group// -->
+
+                <div th:if="${alternative != null}">
+                    Oops, already booked. Next available is on <b th:text="${alternative}"></b>
+                </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">

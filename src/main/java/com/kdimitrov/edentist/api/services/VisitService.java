@@ -1,5 +1,6 @@
 package com.kdimitrov.edentist.api.services;
 
+import com.kdimitrov.edentist.model.Result;
 import com.kdimitrov.edentist.model.UserEntity;
 import com.kdimitrov.edentist.model.VisitEntity;
 import com.kdimitrov.edentist.model.dto.VisitApprovalDto;
@@ -18,6 +19,8 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.kdimitrov.edentist.utils.WorkableLocalDateTimeUtil.workable;
+
 @RequiredArgsConstructor
 @Service
 public class VisitService {
@@ -27,8 +30,16 @@ public class VisitService {
     private final VisitRepository visitRepository;
     private final UserRepository userRepository;
 
-    public VisitRequest createVisit(VisitDTO visitDto, Principal principal) throws NotFoundException {
+    public Result<VisitRequest> createVisit(VisitDTO visitDTO, Principal principal) throws NotFoundException {
+        return this.createVisit(visitDTO, principal, true);
+    }
+
+    public Result<VisitRequest> createVisit(VisitDTO visitDto, Principal principal, boolean persist) throws NotFoundException {
         LOGGER.info("Creating a new visit with principal [PROTECTED].");
+
+        if (isAlreadyRequested(visitDto)) {
+            return getNextAvailable(visitDto, principal);
+        }
 
         VisitEntity visitEntity = new VisitEntity();
         visitEntity.setDate(LocalDateTime.parse(visitDto.getDate()));
@@ -42,11 +53,16 @@ public class VisitService {
         visitEntity.setApproved(false);
         visitEntity.setDeclined(false);
 
-        visitRepository.save(visitEntity);
-        return new VisitRequest.Builder(visitEntity)
+        if (persist) {
+            visitRepository.save(visitEntity);
+        }
+
+        VisitRequest visitRequest = new VisitRequest.Builder(visitEntity)
                 .setPatientMail(principalEntity.getEmail())
                 .setRemedialMail(remedialEntity.getEmail())
                 .build();
+
+        return new Result<>(visitRequest, persist);
     }
 
     public List<VisitEntity> getNotProcessed(long userId) {
@@ -67,5 +83,31 @@ public class VisitService {
             entity.setDeclined(true);
         }
         visitRepository.saveAndFlush(entity);
+    }
+
+    private boolean isAlreadyRequested(VisitDTO visitDto) {
+        return visitRepository
+                .findAlreadyRequest(LocalDateTime.parse(visitDto.getDate()), visitDto.getRemedial())
+                .isPresent();
+    }
+
+    public Result<VisitRequest> getNextAvailable(VisitDTO visitDto, Principal principal) throws NotFoundException {
+        LocalDateTime nextAvailableDateTime = getNextAvailableRecursive(
+                workable(LocalDateTime.parse(visitDto.getDate()).plusMinutes(30)),
+                visitDto.getRemedial());
+
+        visitDto.setDate(nextAvailableDateTime.toString());
+        return this.createVisit(visitDto, principal, false);
+    }
+
+    private LocalDateTime getNextAvailableRecursive(LocalDateTime date, String remedial) {
+        boolean isBooked = visitRepository
+                .findNextAvailable(date, remedial)
+                .isPresent();
+        if (isBooked) {
+            getNextAvailableRecursive(date.plusMinutes(30), remedial);
+        }
+
+        return date;
     }
 }

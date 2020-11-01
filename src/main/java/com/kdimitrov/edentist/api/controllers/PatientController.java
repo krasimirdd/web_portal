@@ -3,6 +3,7 @@ package com.kdimitrov.edentist.api.controllers;
 import com.kdimitrov.edentist.api.services.MQSender;
 import com.kdimitrov.edentist.api.services.UserService;
 import com.kdimitrov.edentist.api.services.VisitService;
+import com.kdimitrov.edentist.model.Result;
 import com.kdimitrov.edentist.model.UserEntity;
 import com.kdimitrov.edentist.model.VisitEntity;
 import com.kdimitrov.edentist.model.dto.VisitDTO;
@@ -21,6 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Comparator;
 import java.util.List;
 
@@ -36,7 +39,8 @@ public class PatientController {
     @PostMapping("/patient/visit")
     public String bookVisit(@Valid @ModelAttribute("formData") VisitDTO visitDto,
                             @AuthenticationPrincipal Principal principal,
-                            BindingResult bindingResult) throws NotFoundException {
+                            BindingResult bindingResult,
+                            Model model) throws NotFoundException {
 
         if (bindingResult.hasErrors()) {
             return "home/home";
@@ -49,10 +53,17 @@ public class PatientController {
             return "registration/registration";
         }
 
-        VisitRequest visit = visitService.createVisit(visitDto, principal);
-        mqService.send(visit);
-
-        return "redirect:/home";
+        Result<VisitRequest> visitResult = visitService.createVisit(visitDto, principal);
+        if (visitResult.successful()) {
+            mqService.send(visitResult.get());
+            return "redirect:/home";
+        } else {
+            model.addAttribute("dentists", userService.getAllDentists());
+            model.addAttribute("alternative",
+                    visitResult.get().getDate()
+                            .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)));
+            return "home/home";
+        }
     }
 
     @GetMapping("/patient/visit")

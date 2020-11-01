@@ -27,7 +27,7 @@ public class MQTask implements Runnable {
     public void run() {
         try {
             mailService.sendEmail(SUBJECT,
-                    Paths.get("C:\\Users\\kdimitrov\\Home\\Java\\edentist\\src\\main\\resources\\templates\\fragments\\email_remedial.html"),
+                    Paths.get("C:\\Users\\kdimitrov\\Home\\Java\\web_portal\\src\\main\\resources\\templates\\remedial\\remedial.html"),
                     visitRequest.getRemedialMail(),
                     visitRequest.getCode());
         } catch (MessagingException | IOException e) {
@@ -36,7 +36,7 @@ public class MQTask implements Runnable {
 
         try {
             mailService.sendEmail(SUBJECT,
-                    Paths.get("C:\\Users\\kdimitrov\\Home\\Java\\edentist\\src\\main\\resources\\templates\\fragments\\email_patient.html"),
+                    Paths.get("C:\\Users\\kdimitrov\\Home\\Java\\web_portal\\src\\main\\resources\\templates\\patient\\patient.html"),
                     visitRequest.getPatientMail(),
                     visitRequest.getCode());
         } catch (MessagingException | IOException e) {

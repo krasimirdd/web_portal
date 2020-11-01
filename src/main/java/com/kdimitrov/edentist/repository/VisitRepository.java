@@ -1,11 +1,10 @@
 package com.kdimitrov.edentist.repository;
 
 import com.kdimitrov.edentist.model.VisitEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.security.core.userdetails.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,4 +18,9 @@ public interface VisitRepository extends JpaRepository<VisitEntity, Long> {
 
     Optional<VisitEntity> findByCode(String code);
 
+    @Query(value = "SELECT v from VisitEntity v where v.date =:date and v.remedial.email=:remedial")
+    Optional<VisitEntity> findAlreadyRequest(LocalDateTime date, String remedial);
+
+    @Query(value = "SELECT v from VisitEntity v where v.date =:date and v.remedial.email=:remedial")
+    Optional<VisitEntity> findNextAvailable(LocalDateTime date, String remedial);
 }
