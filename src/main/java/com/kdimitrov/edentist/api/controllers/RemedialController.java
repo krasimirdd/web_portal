@@ -38,6 +38,7 @@ public class RemedialController {
         if (user == null) {
             return "404";
         }
+
         List<VisitEntity> entities = visitService.getNotProcessed(user.getId());
         entities.sort(Comparator.comparing(VisitEntity::getDate));
 
