@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.time.Month;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 public class WorkableLocalDateTimeUtilTest {
 
     LocalDateTime MONDAY_BEFORE_START = LocalDateTime.of(2020, Month.NOVEMBER, 9, 7, 0);

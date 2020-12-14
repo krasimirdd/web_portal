@@ -1,0 +1,26 @@
+  version: "2"
+  services:
+      edentist:
+          image: 8630e2e7f8b6
+          hostname: edentist
+          ports:
+              - 8081:8081
+              - 8082:8082
+          depends_on:
+              - db
+              - mq
+      db:
+          image: mysql:5.7
+          hostname: edentist_db
+          ports:
+              - 3306:3306
+          environment:
+              - MYSQL_ROOT_PASSWORD=pass
+      mq:
+          image: rabbitmq:3-management
+          hostname: edentist_rabbitmq
+          ports:
+              - 15672:15672
+              - 5672:5672
+          depends_on:
+              - db

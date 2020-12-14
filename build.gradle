@@ -59,10 +59,10 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.springframework.security:spring-security-test'
 
-    compileOnly "org.webjars:webjars-locator:${webjarsLocatorVersion}"
-    compileOnly "org.webjars:jquery:${jQueryVersion}"
-    compileOnly "org.webjars:popper.js:${popperJsVersion}"
-    compileOnly "org.webjars:bootstrap:${bootstrapVersion}"
+    compile "org.webjars:webjars-locator:${webjarsLocatorVersion}"
+    compile "org.webjars:jquery:${jQueryVersion}"
+    compile "org.webjars:popper.js:${popperJsVersion}"
+    compile "org.webjars:bootstrap:${bootstrapVersion}"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.6"
 }
 
@@ -80,4 +80,8 @@ test {
 asciidoctor {
     inputs.dir snippetsDir
     dependsOn test
+}
+
+bootJar {
+    mainClassName = "com.kdimitrov.edentist.ServerAppLauncher"
 }
