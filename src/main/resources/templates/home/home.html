@@ -8,11 +8,11 @@
 <!-- EO: Navbar -->
 
 <h1 class="margins-top-bottom home-paragraph">
-    Welcome to Tabula, <span th:text="${#authentication.getName()}" th:remove="tag">user</span>!
+    Welcome to Dentist Portal, <span th:text="${#authentication.getName()}" th:remove="tag">user</span>!
 </h1>
 
 <p class="home-paragraph lead">
-    Tabula is a sample application in which you can create and explore announcements and events.
+    Dentist Portal is a sample application in which you can create and manage dentist visits.
     It is implemented entirely for educational purposes. Feel free to modify it, play around or
     contribute your improvements and new features.
 </p>
@@ -31,10 +31,11 @@
         <article class="card-body">
 
             <hr>
-            <form th:action="@{/patient/visit}" method="post">
-                <div th:if="${error}" class="alert alert-danger" role="alert">
-                    This username and password combination does not exist.
-                </div>
+            <form name="frm" th:action="@{/patient/visit}" method="post">
+
+                <!-- Error -->
+                <div th:replace="fragments/error :: error(exception)">Navbar here</div>
+                <!-- EO: Error -->
                 <div class="form-group">
                     <label for="visitDate">Date</label>
                     <input
@@ -42,6 +43,7 @@
                             type="datetime-local"
                             class="form-control"
                             id="visitDate"
+                            onclick="IsEmpty();"
                     />
                 </div> <!-- form-group// -->
                 <div class="form-group">
@@ -121,5 +123,18 @@
     let step = "1800";
     document.getElementById("visitDate").setAttribute("min", today);
     document.getElementById("visitDate").setAttribute("step", step);
+
+    function IsEmpty() {
+        if (document.forms['frm'].date.value === "") {
+            alert("Must not be empty date!");
+            return false;
+        }
+
+        if (document.forms['frm'].remedial.value === "") {
+            alert("Invalid remedial!");
+            return false;
+        }
+        return true;
+    }
 </script>
 </html>

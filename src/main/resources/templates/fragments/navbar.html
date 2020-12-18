@@ -14,7 +14,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary" th:fragment="navbar(activeTab)">
 
     <!-- Project name -->
-    <a class="navbar-brand" href="#">Tabula</a>
+    <a class="navbar-brand" href="#">Dentist Portal</a>
     <button aria-controls="navbarSupportedContent"
             aria-expanded="false"
             aria-label="Toggle navigation"
@@ -29,19 +29,24 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item" th:classappend="${activeTab == 'home'}? 'active'">
-                <a class="nav-link" th:href="@{/templates/home}">Home</a>
+                <a class="nav-link" th:href="@{/home}">Home</a>
             </li>
-            <li class="nav-item" th:classappend="${activeTab == 'announcements'}? 'active'">
-                <a class="nav-link" th:href="@{/announcements}">Announcements</a>
+            <li class="nav-item" th:classappend="${activeTab == 'news'}? 'active'">
+                <a class="nav-link" th:href="@{/news}">Newsfeed</a>
             </li>
-            <li class="nav-item" th:classappend="${activeTab == 'events'}? 'active'">
-                <a class="nav-link" th:href="@{/events}">Events</a>
+            <li class="nav-item" sec:authorize="hasRole('REMEDIAL') || hasRole('ADMIN')"
+                th:classappend="${activeTab == 'manage'}? 'active'">
+                <a class="nav-link" th:href="@{/visit/acknowledgement}">Manage</a>
+            </li>
+            <li class="nav-item" sec:authorize="hasRole('USER') || hasRole('ADMIN')"
+                th:classappend="${activeTab == 'events'}? 'active'">
+                <a class="nav-link" th:href="@{/patient/visit/track}">Events</a>
             </li>
             <li class="nav-item" sec:authorize="hasRole('ADMIN')" th:classappend="${activeTab == 'stats'}? 'active'">
-                <a class="nav-link" th:href="@{/stats}">Stats</a>
+                <a class="nav-link" th:href="@{/stats}">Statistics</a>
             </li>
             <li class="nav-item" sec:authorize="hasRole('ADMIN')" th:classappend="${activeTab == 'graphiql'}? 'active'">
-                <a class="nav-link" th:href="@{/graphiql}">GraphQL</a>
+                <a class="nav-link" th:href="@{/graphiql}">GraphQL Console</a>
             </li>
         </ul>
 
