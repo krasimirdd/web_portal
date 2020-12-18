@@ -1,9 +1,9 @@
 package com.kdimitrov.edentist;
 
-import com.kdimitrov.edentist.config.eDentistConfig;
-import com.kdimitrov.edentist.model.RoleEntity;
-import com.kdimitrov.edentist.model.UserEntity;
-import com.kdimitrov.edentist.repository.UserRepository;
+import com.kdimitrov.edentist.config.common.eDentistConfig;
+import com.kdimitrov.edentist.common.model.RoleEntity;
+import com.kdimitrov.edentist.common.model.UserEntity;
+import com.kdimitrov.edentist.common.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

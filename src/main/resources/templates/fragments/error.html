@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="error(exception)">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input value="Back" action="action" type="button" onclick="history.go(-1);"/>
+<p>
+    You made a bad request :
+<p th:text="${error}"></p>
+Details:
+<p th:text="${message}"> </p>
+Caused by:
+<p th:text="${rejectedValue}"> </p>
+
+</body>
+</html>
